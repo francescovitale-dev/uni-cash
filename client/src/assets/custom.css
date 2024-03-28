@@ -1,0 +1,23 @@
+/* :root {
+  --primary-color: #222260;
+  --color-green: #42AD00;
+  --color-grey: #aaa;
+  --color-accent: #F56692;
+  --color-delete: #FF0000;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem; Bootstrap gestisce la dimensione del font in modo responsivo, puoi aggiustare questo valore se necessario
+  color: rgba(34, 34, 96, .6);
+  background-color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary-color);
+}
+
+.error {
+  color: red;
+  animation: shake 0.5s ease-in-out;
+} */
