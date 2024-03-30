@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Form, ListGroup, Card } from "react-bootstrap";
 import axios from "axios"; // Assuming you are using axios for HTTP requests
+import ChartTracker from './ChartTracker';
 
 const ExpenseTracker = () => {
   const [expenses, setExpenses] = useState([]);
@@ -9,6 +10,11 @@ const ExpenseTracker = () => {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+
+  const chartData = {
+    labels: expenses.map(expense => expense.category),
+    amounts: expenses.map(expense => expense.amount)
+  };
 
   useEffect(() => {
     fetchExpenses();
@@ -61,7 +67,7 @@ const ExpenseTracker = () => {
   };
 
   return (
-    <Card style={{ width: "30rem", margin: "0 auto", marginTop: "20px" }}>
+    <Card className="my-4 mx-auto" style={{ maxWidth: "30rem" }}>
       <Card.Body>
         <Card.Title>Expense Tracker</Card.Title>
         <Form onSubmit={handleAddExpense}>
@@ -134,6 +140,8 @@ const ExpenseTracker = () => {
             </ListGroup.Item>
           ))}
         </ListGroup>
+
+        <ChartTracker data={chartData} />
       </Card.Body>
     </Card>
   );

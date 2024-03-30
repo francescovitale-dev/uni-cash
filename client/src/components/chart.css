@@ -1,0 +1,9 @@
+.chart-container {
+  width: 100%; /* Larghezza del container */
+}
+
+.chart-canvas {
+  width: 100%; /* Larghezza del canvas */
+  height: 400px; /* Altezza del canvas */
+  margin-top: 20px; /* Margine superiore */
+}
