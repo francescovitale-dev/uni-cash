@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, ListGroup, Card } from "react-bootstrap";
 import axios from "axios"; // Assuming you are using axios for HTTP requests
 import ChartTracker from './ChartTracker';
@@ -6,15 +6,28 @@ import ChartTracker from './ChartTracker';
 const ExpenseTracker = () => {
   const [expenses, setExpenses] = useState([]);
   const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState(""); // Changed variable name to 'price'
+  const [selectedCategory, setSelectedCategory] = useState(""); 
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
 
+  const categories = ["Food", "Travel", "Shopping", "Utilities"];
+
+  const aggregatedExpenses = expenses.reduce((acc, expense) => {
+    const existingCategory = acc.find(item => item.category === expense.category);
+    if (existingCategory) {
+      existingCategory.price += expense.price; // Changed property name to 'price'
+    } else {
+      acc.push({ category: expense.category, price: expense.price }); // Changed property name to 'price'
+    }
+    return acc;
+  }, []);
+
   const chartData = {
-    labels: expenses.map(expense => expense.category),
-    amounts: expenses.map(expense => expense.amount)
+    labels: aggregatedExpenses.map(expense => expense.category),
+    price: aggregatedExpenses.map(expense => expense.price) // Changed property name to 'price'
   };
+
 
   useEffect(() => {
     fetchExpenses();
@@ -33,7 +46,7 @@ const ExpenseTracker = () => {
 
   const handleAddExpense = async (e) => {
     e.preventDefault();
-    if (!title || !amount || !category || !description || !date) {
+    if (!title || !price || !selectedCategory || !description || !date) { // Changed variable name to 'price'
       alert("Please fill all fields");
       return;
     }
@@ -41,15 +54,15 @@ const ExpenseTracker = () => {
     try {
       await axios.post(`${BASE_URL}/api/v1/add-expense`, {
         title,
-        amount,
-        category,
+        price,
+        category: selectedCategory,
         description,
         date,
       });
       fetchExpenses(); // Refresh the list of expenses
       setTitle("");
-      setAmount("");
-      setCategory("");
+      setPrice("");
+      setSelectedCategory("");
       setDescription("");
       setDate("");
     } catch (error) {
@@ -82,23 +95,27 @@ const ExpenseTracker = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formAmount">
-            <Form.Label>Amount</Form.Label>
+            <Form.Label>Price</Form.Label> {/* Changed label to 'Price' */}
             <Form.Control
               type="number"
-              placeholder="Enter amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Enter price" 
+              value={price}
+              onChange={(e) => setPrice(e.target.value)} 
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formCategory">
             <Form.Label>Category</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Enter category (e.g., Food, Travel)"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
+              as="select"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">Select a category...</option>
+              {categories.map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
+            </Form.Control>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formDescription">
@@ -128,7 +145,7 @@ const ExpenseTracker = () => {
         <ListGroup variant="flush">
           {expenses.map((expense) => (
             <ListGroup.Item key={expense._id}>
-              {expense.title} - ${expense.amount}
+              {expense.title} - ${expense.price} {/* Changed variable name to 'price' */}
               <Button
                 variant="danger"
                 size="sm"

@@ -1,12 +1,12 @@
 const ExpenseSchema = require("../models/expenseModel");
 
 const addExpense = async (req, res) => {
- const { title, description, amount, type, date, category } = req.body;
+ const { title, description, price, type, date, category } = req.body;
 
  const expense = ExpenseSchema({
    title,
    description,
-   amount,
+   price,
    type,
    date,
    category
@@ -14,11 +14,11 @@ const addExpense = async (req, res) => {
 
  try {
   // validations
-  if (!title || !description || !amount || !date || !category) {
+  if (!title || !description || !price || !date || !category) {
    return res.status(400).json({ message: "All fields are required" });
   }
-  if (!amount || amount < 0) {
-    return res.status(400).json({ message: "Please add a positive amount" });
+  if (!price || price < 0) {
+    return res.status(400).json({ message: "Please add a positive price" });
    }
   await expense.save();
   res.status(200).json({ message: "Expense added successfully" });

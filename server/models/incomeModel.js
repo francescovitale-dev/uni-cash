@@ -11,9 +11,9 @@ const IncomeSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add a description for this income'],
   },
-  amount: {
+  price: {
     type: Number,
-    required: [true, 'Please add an amount for this income'],
+    required: [true, 'Please add an price for this income'],
   },
   date: {
     type: Date,

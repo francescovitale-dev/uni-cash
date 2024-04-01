@@ -1,14 +1,32 @@
 import { useState, useEffect } from "react";
 import { Button, Form, ListGroup, Card } from "react-bootstrap";
 import axios from "axios"; // Assuming you are using axios for HTTP requests
+import ChartTracker from './ChartTracker';
 
 const IncomeTracker = () => {
   const [incomes, setIncomes] = useState([]);
   const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
+  const [price, setprice] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+
+  const categories = ["Food", "Travel", "Shopping", "Utilities"];
+
+  const aggregatedIncomes = incomes.reduce((acc, incomes) => {
+    const existingCategory = acc.find(item => item.category === incomes.category);
+    if (existingCategory) {
+      existingCategory.price += incomes.price; // Changed property name to 'price'
+    } else {
+      acc.push({ category: incomes.category, price: incomes.price }); // Changed property name to 'price'
+    }
+    return acc;
+  }, []);
+
+  const chartData = {
+    labels: aggregatedIncomes.map(incomes => incomes.category),
+    price: aggregatedIncomes.map(incomes => incomes.price) // Changed property name to 'price'
+  };
 
   useEffect(() => {
     fetchIncomes();
@@ -28,7 +46,7 @@ const IncomeTracker = () => {
 
   const handleAddIncome = async (e) => {
     e.preventDefault();
-    if (!title || !amount || !category || !description || !date) {
+    if (!title || !price || !selectedCategory || !description || !date) {
       alert("Please fill all fields");
       return;
     }
@@ -36,14 +54,14 @@ const IncomeTracker = () => {
     try {
       await axios.post(`${BASE_URL}/api/v1/add-income`, {
         title,
-        amount,
-        category,
+        price,
+        category: selectedCategory,
         description,
         date,
       });
       fetchIncomes(); // Refresh the list of incomes
       setTitle("");
-      setAmount("");
+      setprice("");
       setCategory("");
       setDescription("");
       setDate("");
@@ -76,24 +94,28 @@ const IncomeTracker = () => {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formAmount">
-            <Form.Label>Amount</Form.Label>
+          <Form.Group className="mb-3" controlId="formprice">
+            <Form.Label>Price</Form.Label>
             <Form.Control
               type="number"
-              placeholder="Enter amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Enter price"
+              value={price}
+              onChange={(e) => setprice(e.target.value)}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formCategory">
             <Form.Label>Category</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Enter category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
+              as="select"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">Select a category...</option>
+              {categories.map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
+            </Form.Control>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formDescription">
@@ -124,7 +146,7 @@ const IncomeTracker = () => {
           {Array.isArray(incomes) &&
             incomes.map((income) => (
               <ListGroup.Item key={income._id}>
-                {income.title} - ${income.amount}
+                {income.title} - ${income.price}
                 <Button
                   variant="danger"
                   size="sm"
@@ -136,6 +158,8 @@ const IncomeTracker = () => {
               </ListGroup.Item>
             ))}
         </ListGroup>
+
+        <ChartTracker data={chartData} />
       </Card.Body>
     </Card>
   );
