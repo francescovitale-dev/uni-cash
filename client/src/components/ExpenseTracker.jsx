@@ -80,7 +80,7 @@ const ExpenseTracker = () => {
   };
 
   return (
-    <Card className="my-4 mx-auto" style={{ maxWidth: "30rem" }}>
+    <Card style={{ width: "30rem", margin: "20px auto" }}>
       <Card.Body>
         <Card.Title>Expense Tracker</Card.Title>
         <Form onSubmit={handleAddExpense}>
@@ -94,7 +94,7 @@ const ExpenseTracker = () => {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formAmount">
+          <Form.Group className="mb-3" controlId="formPrice">
             <Form.Label>Price</Form.Label> {/* Changed label to 'Price' */}
             <Form.Control
               type="number"

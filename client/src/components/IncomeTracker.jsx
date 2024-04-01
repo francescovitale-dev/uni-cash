@@ -80,7 +80,7 @@ const IncomeTracker = () => {
   };
 
   return (
-    <Card style={{ width: "30rem", margin: "0 auto", marginTop: "20px" }}>
+    <Card style={{ width: "30rem", margin: "20px auto" }}>
       <Card.Body>
         <Card.Title>Income Tracker</Card.Title>
         <Form onSubmit={handleAddIncome}>
