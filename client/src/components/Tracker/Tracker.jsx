@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
+import {Container, Form, Button, Card, Row, Col, ListGroup } from "react-bootstrap";
 import axios from "axios";
 import ChartTracker from "./ChartTracker";
 
@@ -17,11 +17,13 @@ const Tracker = () => {
 
   const checkTransactionsAvailability = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/get-transactions');
+      const response = await axios.get(
+        "http://localhost:8080/api/v1/get-transactions"
+      );
       const transactions = response.data.data;
       setTransactionsAvailable(transactions.length > 0);
     } catch (error) {
-      console.error('Error checking transactions availability:', error);
+      console.error("Error checking transactions availability:", error);
     }
   };
 
@@ -78,7 +80,10 @@ const Tracker = () => {
         </>
       );
     } else {
-      return <option value="">Select type first</option>;
+      return  <>
+      <option value="">Select category</option>
+      <option value="Other">Select type first</option>
+    </>
     }
   };
 
@@ -142,11 +147,11 @@ const Tracker = () => {
             <Container>
               <Row>
                 <Col md={6} sm={12}>
-                  <hr style={{ margin: '20px 0' }} />
+                  <hr style={{ margin: "20px 0" }} />
                   <ChartTracker type="income" />
                 </Col>
                 <Col md={6} sm={12}>
-                  <hr style={{ margin: '20px 0' }} />
+                  <hr style={{ margin: "20px 0" }} />
                   <ChartTracker type="expense" />
                 </Col>
               </Row>
