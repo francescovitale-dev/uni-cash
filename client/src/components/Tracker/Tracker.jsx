@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import ChartTracker from "./ChartTracker";
@@ -12,6 +12,22 @@ const Tracker = () => {
     category: "",
     type: "",
   });
+
+  const [transactionsAvailable, setTransactionsAvailable] = useState(false);
+
+  const checkTransactionsAvailability = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/v1/get-transactions');
+      const transactions = response.data.data;
+      setTransactionsAvailable(transactions.length > 0);
+    } catch (error) {
+      console.error('Error checking transactions availability:', error);
+    }
+  };
+
+  useEffect(() => {
+    checkTransactionsAvailability();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -122,18 +138,20 @@ const Tracker = () => {
               Add Transaction
             </Button>
           </Form>
-          <Container>
-            <Row>
-              <Col md={6} sm={12}>
-              <hr style={{ margin: '20px 0' }} />
-                <ChartTracker type="income" />
-              </Col>
-              <Col md={6} sm={12}>
-              <hr style={{ margin: '20px 0' }} />
-                <ChartTracker type="expense" />
-              </Col>
-            </Row>
-          </Container>
+          {transactionsAvailable && (
+            <Container>
+              <Row>
+                <Col md={6} sm={12}>
+                  <hr style={{ margin: '20px 0' }} />
+                  <ChartTracker type="income" />
+                </Col>
+                <Col md={6} sm={12}>
+                  <hr style={{ margin: '20px 0' }} />
+                  <ChartTracker type="expense" />
+                </Col>
+              </Row>
+            </Container>
+          )}
         </Card.Body>
       </Card>
     </Container>

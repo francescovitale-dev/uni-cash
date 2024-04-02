@@ -28,6 +28,17 @@ const getTransactions = async (req, res) => {
   }
 };
 
+const getTransactionsByType = async (req, res) => {
+  const { type } = req.params;
+
+  try {
+    const transactions = await Transaction.find({ type });
+    res.status(200).json({ success: true, data: transactions });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 // Elimina una transazione
 const deleteTransaction = async (req, res) => {
   const { id } = req.params;
@@ -46,4 +57,4 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
-module.exports = { addTransaction, getTransactions, deleteTransaction };
+module.exports = { addTransaction, getTransactions, deleteTransaction, getTransactionsByType };
