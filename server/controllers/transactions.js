@@ -1,47 +1,49 @@
-const IncomeSchema = require("../models/incomeModel");
+const Transaction = require('../models/transactionSchema');
 
-const addIncome = async (req, res) => {
- const { title, description, price, type, date, category } = req.body;
+// Aggiungi una nuova transazione
+const addTransaction = async (req, res) => {
+  const { title, amount, category, type } = req.body;
 
- const income = IncomeSchema({
-   title,
-   description,
-   price,
-   type,
-   date,
-   category
- })
-
- try {
-  // validations
-  if (!title || !description || !price || !date || !category) {
-   return res.status(400).json({ message: "All fields are required" });
-  }
-  if (!price || price < 0) {
-    return res.status(400).json({ message: "Please add a positive price" });
-   }
-  await income.save();
-  res.status(200).json({ message: "Income added successfully" });
- } catch (error) {
-  res.status(500).json({ message: error.message });
- }
- console.log(income);
-}
-
-const getIncomes = async (req, res) => {
   try {
-    const incomes = await IncomeSchema.find().sort({ createdAt: -1 });
-    res.status(200).json(incomes);
+    const transaction = await Transaction.create({
+      title,
+      amount,
+      category,
+      type,
+    });
+
+    res.status(201).json({ success: true, data: transaction });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
-} 
+};
 
-const deleteIncomes = async (req, res) => {
+// Ottieni tutte le transazioni
+const getTransactions = async (req, res) => {
+  try {
+    const transactions = await Transaction.find();
+    res.status(200).json({ success: true, data: transactions });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// Elimina una transazione
+const deleteTransaction = async (req, res) => {
   const { id } = req.params;
-  IncomeSchema.findByIdAndDelete(id)
-    .then(() => res.status(200).json({ message: "Income deleted successfully" }))
-    .catch((error) => res.status(500).json({ message: error.message }));
-} 
 
-module.exports = { addIncome, getIncomes, deleteIncomes }
+  try {
+    const transaction = await Transaction.findById(id);
+
+    if (!transaction) {
+      return res.status(404).json({ success: false, error: 'Transaction not found' });
+    }
+
+    await transaction.deleteOne();
+    res.status(200).json({ success: true, data: {} });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+module.exports = { addTransaction, getTransactions, deleteTransaction };
