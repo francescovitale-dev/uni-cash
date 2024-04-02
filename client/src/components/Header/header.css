@@ -30,14 +30,3 @@
     font-size: 0.9rem;
   }
 }
-
-@media (max-width: 576px) {
-  .navbar-brand.title {
-    font-size: 0.8rem;
-  }
-
-  .navbar-nav .nav-link {
-    font-size: 0.7rem;
-  }
-}
-
