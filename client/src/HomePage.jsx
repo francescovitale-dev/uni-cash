@@ -1,8 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import ExpenseTracker from './components/ExpenseTracker';
-import IncomeTracker from './components/IncomeTracker';
-import ChartTracker from './components/ChartTracker'; // Importa il componente del grafico
+import Tracker from './components/Tracker/Tracker';
 
 function HomePage() {
 
@@ -12,18 +10,10 @@ function HomePage() {
   // };
 
   return (
-    <Container className="content-top-padding">
-      <Row className="justify-content-md-center">
+    <Container className="mt-5">
+      <Row className="justify-content-center">
         <Col xs={12} md={6}>
-          <ExpenseTracker />
-        </Col>
-        <Col xs={12} md={6}>
-          <IncomeTracker />
-        </Col>
-      </Row>
-      <Row className="justify-content-md-center">
-        <Col xs={12} md={8}>
-          <ChartTracker />{/* data={chartData} /> Passa i dati al componente del grafico */}
+          <Tracker />
         </Col>
       </Row>
     </Container>
