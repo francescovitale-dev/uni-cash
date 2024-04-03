@@ -4,6 +4,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Header from './components/Header/Header'
 import HomePage from './HomePage'
+import Footer from './components/Footer/Footer'; // Importa il componente del footer
 import './App.css';
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
     <div className="App">
       <Header className="mb-3" />
       <HomePage className="mt-3" />
+      <Footer />
     </div>
   );
 }

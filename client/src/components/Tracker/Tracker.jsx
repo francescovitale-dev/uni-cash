@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Container, Form, Button, Card, Row, Col, ListGroup } from "react-bootstrap";
+import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import ChartTracker from "./ChartTracker";
 
@@ -17,9 +17,7 @@ const Tracker = () => {
 
   const checkTransactionsAvailability = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/v1/get-transactions"
-      );
+      const response = await axios.get(`${API_BASE_URL}/get-transactions`);
       const transactions = response.data.data;
       setTransactionsAvailable(transactions.length > 0);
     } catch (error) {
@@ -56,7 +54,10 @@ const Tracker = () => {
     }
   };
 
-  // Categorie dinamiche in base al tipo selezionato
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
   const getCategoryOptions = () => {
     if (formData.type === "income") {
       return (
@@ -80,22 +81,24 @@ const Tracker = () => {
         </>
       );
     } else {
-      return  <>
-      <option value="">Select category</option>
-      <option value="Other">Select type first</option>
-    </>
+      return (
+        <>
+          <option value="">Select type first</option>
+        </>
+      );
     }
   };
 
   return (
     <Container className="d-flex align-items-center justify-content-center mt-5">
-      <Card style={{ width: "40rem" }} className="mx-auto">
+      <Card style={{ width: "40rem", borderRadius: "20px" }} className="mx-auto">
         <Card.Body>
-          <Card.Title className="text-center">Money Tracker</Card.Title>
+          <Card.Title className="text-center" style={{ color: "#0D6EFD" }}>Money Tracker</Card.Title>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="type">
               <Form.Label>Type</Form.Label>
               <Form.Control
+                className="mb-3"
                 as="select"
                 name="type"
                 value={formData.type}
@@ -110,6 +113,7 @@ const Tracker = () => {
             <Form.Group controlId="category">
               <Form.Label>Category</Form.Label>
               <Form.Control
+                className="mb-3"
                 as="select"
                 name="category"
                 value={formData.category}
@@ -122,6 +126,7 @@ const Tracker = () => {
             <Form.Group controlId="title">
               <Form.Label>Title</Form.Label>
               <Form.Control
+                className="mb-3"
                 type="text"
                 name="title"
                 value={formData.title}
@@ -139,20 +144,26 @@ const Tracker = () => {
                 required
               />
             </Form.Group>
-            <Button className="w-100 mt-3" variant="primary" type="submit">
+            <Button
+              onClick={refreshPage}
+              className="w-100 mt-3"
+              variant="primary"
+              type="submit"
+            >
               Add Transaction
             </Button>
           </Form>
+
           {transactionsAvailable && (
             <Container>
               <Row>
                 <Col md={6} sm={12}>
                   <hr style={{ margin: "20px 0" }} />
-                  <ChartTracker type="income" />
+                  <ChartTracker key="income" type="income" />
                 </Col>
                 <Col md={6} sm={12}>
                   <hr style={{ margin: "20px 0" }} />
-                  <ChartTracker type="expense" />
+                  <ChartTracker key="expense" type="expense" />
                 </Col>
               </Row>
             </Container>

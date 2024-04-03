@@ -1,13 +1,4 @@
-.content-top-padding {
-  padding-top: 56px; /* Adegua questo valore in base all'altezza della tua Navbar */
-}
 
-@media (max-width: 576px) { /* Breakpoint per dispositivi mobili di Bootstrap */
-  .form-group {
-    padding: 0.5rem; /* Esempio di riduzione del padding */
-  }
-  /* Altri stili specifici per dispositivi mobili */
-}
 
 
 
