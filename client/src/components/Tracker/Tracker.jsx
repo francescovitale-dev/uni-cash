@@ -72,6 +72,8 @@ const Tracker = () => {
       return (
         <>
           <option value="">Select category</option>
+          <option value="Alcohol">Alcohol</option>
+          <option value="Party">Party</option>
           <option value="Food">Food</option>
           <option value="Rent">Rent</option>
           <option value="Utilities">Utilities</option>
@@ -171,6 +173,7 @@ const Tracker = () => {
         </Card.Body>
       </Card>
     </Container>
+    
   );
 };
 

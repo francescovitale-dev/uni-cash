@@ -7,3 +7,10 @@
   height: 400px; /* Altezza del canvas */
   margin-top: 20px; /* Margine superiore */
 }
+
+/* Nel tuo file CSS */
+.total-expenses {
+  font-size: 18px;
+  font-weight: bold;
+  color: #5498ff;
+}

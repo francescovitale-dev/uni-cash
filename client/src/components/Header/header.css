@@ -1,6 +1,7 @@
 /* header.css */
 .navbar {
   transition: background-color 0.3s ease;
+  margin-bottom: 20rem;
 }
 
 .navbar-brand.title {

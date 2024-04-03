@@ -14,8 +14,8 @@ const Footer = () => {
           </Col>
           <Col md={4} sm={12}>
             <h3>Contact Us</h3>
-            <p>Email: example@example.com</p>
-            <p>Phone: 123-456-7890</p>
+            <p>Email: example@example.com <br />
+              Phone: +1 555-555-5555 </p>
           </Col>
           <Col md={4} sm={12}>
             <h3>Follow Us</h3>

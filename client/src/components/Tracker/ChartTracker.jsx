@@ -103,7 +103,7 @@ const ChartTracker = ({ type }) => {
 
   return (
     <div className="chart-container">
-      <div className='text-center'>Total {type}s : ${totalExpenses}</div>
+      <div className='text-center total-expenses'>Total {type}s : ${totalExpenses}</div>
       <canvas ref={chartRef} className="chart-canvas"></canvas>
     </div>
   );
