@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Container, Row, Col } from "react-bootstrap";
-import Header from "./components/Header/Header";
+import Navbar from "./components/Navbar/Navbar";
 import Tracker from "./components/Tracker/Tracker";
 import Footer from "./components/Footer/Footer"; 
 
@@ -21,7 +21,7 @@ const App = () => {
         <Container>
           <Row>
             <Col className="mb-5">
-              <Header />
+              <Navbar />
             </Col>
           </Row>
           <Row>

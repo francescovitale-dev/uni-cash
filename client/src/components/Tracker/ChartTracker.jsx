@@ -3,7 +3,7 @@ import Chart from 'chart.js/auto';
 import './chart.css';
 import axios from 'axios';
 
-const ChartTracker = ({ type }) => {
+const ChartTracker = ({ type, chartKey }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
   const [totalExpenses, setTotalExpenses] = useState(0);
@@ -11,7 +11,7 @@ const ChartTracker = ({ type }) => {
 
   useEffect(() => {
     fetchData();
-  }, [type]);
+  }, [type, chartKey]);
 
   const fetchData = async () => {
     try {

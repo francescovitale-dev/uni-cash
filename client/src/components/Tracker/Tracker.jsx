@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import ChartTracker from "./ChartTracker";
+import Swal from 'sweetalert2'
 
 const API_BASE_URL = "http://localhost:8080/api/v1"; // Assicurati di sostituire con il tuo URL API
 
@@ -14,6 +15,7 @@ const Tracker = () => {
   });
 
   const [transactionsAvailable, setTransactionsAvailable] = useState(false);
+  const [chartKey, setChartKey] = useState(""); // Aggiungi uno stato per forzare il rirender del componente ChartTracker
 
   const checkTransactionsAvailability = async () => {
     try {
@@ -31,6 +33,14 @@ const Tracker = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "amount" && parseFloat(value) <= 0) {
+      return Swal.fire({
+        text: 'Amount must be greater than 0!',
+        icon: 'info',
+        confirmButtonText: 'Cool'
+      })
+    }
+
     setFormData({
       ...formData,
       [name]: value,
@@ -48,14 +58,11 @@ const Tracker = () => {
         category: "",
         type: "",
       });
+      setChartKey(Math.random().toString(36).substring(7)); // Aggiorna la chiave per forzare il rirender del componente ChartTracker
     } catch (error) {
       console.error("Error adding transaction:", error);
       alert("Error adding transaction. Please try again.");
     }
-  };
-
-  const refreshPage = () => {
-    window.location.reload();
   };
 
   const getCategoryOptions = () => {
@@ -63,8 +70,13 @@ const Tracker = () => {
       return (
         <>
           <option value="">Select category</option>
-          <option value="Salary">Salary</option>
-          <option value="Bonus">Bonus</option>
+          <option value="Scholarship">Scholarship</option>
+          <option value="Part-time Job">Part-time Job</option>
+          <option value="Parental Support">Parental Support</option>
+          <option value="Freelancing">Freelancing</option>
+          <option value="Grants">Grants</option>
+          <option value="Tutoring">Tutoring</option>
+          <option value="Selling Stuff">Selling Stuff</option>
           <option value="Other Income">Other Income</option>
         </>
       );
@@ -93,9 +105,14 @@ const Tracker = () => {
 
   return (
     <Container className="d-flex align-items-center justify-content-center mt-5">
-      <Card style={{ width: "40rem", borderRadius: "20px" }} className="mx-auto">
+      <Card
+        style={{ width: "40rem", borderRadius: "20px" }}
+        className="mx-auto"
+      >
         <Card.Body>
-          <Card.Title className="text-center" style={{ color: "#0D6EFD" }}>Money Tracker</Card.Title>
+          <Card.Title className="text-center" style={{ color: "#0D6EFD" }}>
+            Money Tracker
+          </Card.Title>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="type">
               <Form.Label>Type</Form.Label>
@@ -147,7 +164,6 @@ const Tracker = () => {
               />
             </Form.Group>
             <Button
-              onClick={refreshPage}
               className="w-100 mt-3"
               variant="primary"
               type="submit"
@@ -161,11 +177,11 @@ const Tracker = () => {
               <Row>
                 <Col md={6} sm={12}>
                   <hr style={{ margin: "20px 0" }} />
-                  <ChartTracker key="income" type="income" />
+                  <ChartTracker key="income" type="income" chartKey={chartKey} />
                 </Col>
                 <Col md={6} sm={12}>
                   <hr style={{ margin: "20px 0" }} />
-                  <ChartTracker key="expense" type="expense" />
+                  <ChartTracker key="expense" type="expense" chartKey={chartKey} />
                 </Col>
               </Row>
             </Container>
@@ -173,7 +189,6 @@ const Tracker = () => {
         </Card.Body>
       </Card>
     </Container>
-    
   );
 };
 
