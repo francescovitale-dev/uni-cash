@@ -1,80 +1,41 @@
-// Signup.js
-import React, { useState } from "react";
+import React from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom"; // Import Link component for redirection
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
-    // Qui puoi inserire la logica per inviare i dati della registrazione al backend
-    // e gestire la risposta
-    console.log(formData);
-    // Esegui altre azioni, come il reindirizzamento dell'utente alla pagina di login
+    // Handle user signup here, e.g., via API call
+    // After signup, redirect the user to the desired page
+    // Utilize react-router-dom's history component or other navigation handling techniques
   };
 
   return (
-    <Container>
+    <Container style={{ marginTop: "12rem", marginBottom: "3rem" }}>
       <Row className="justify-content-center mt-5">
         <Col xs={12} md={6}>
-          <h2>Sign Up</h2>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="username">
-              <Form.Label>Username</Form.Label>
-              <Form.Control
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-              />
+          <h2 className="text-center mb-4">Sign Up</h2>
+          <Form onSubmit={handleSignup}>
+            <Form.Group controlId="formBasicName" className="mb-3">
+              <Form.Control type="text" placeholder="Enter your name" />
             </Form.Group>
-            <Form.Group controlId="email">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
+            <Form.Group controlId="formBasicEmail" className="mb-3">
+              <Form.Control type="email" placeholder="Enter email" />
             </Form.Group>
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
+            <Form.Group controlId="formBasicPassword" className="mb-3">
+              <Form.Control type="password" placeholder="Password" />
             </Form.Group>
-            <Form.Group controlId="confirmPassword">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-              />
+            <Form.Group controlId="formBasicConfirmPassword" className="mb-3">
+              <Form.Control type="password" placeholder="Confirm Password" />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" className="w-100">
               Sign Up
             </Button>
+            {/* Add a link to the login page */}
+            <p className="mt-3 text-center">
+              Already have an account?{" "}
+              <Link to="/login">Log in here</Link>
+            </p>
           </Form>
         </Col>
       </Row>
