@@ -6,6 +6,54 @@
 }
 
 .tracker-picture{
-  border-radius: 30px;
+  border-radius: 10px;
+  width: 100%;
 }
+
+/* Utilizzando i media queries per dispositivi con larghezza massima di 767px (dispositivi small) */
+@media (max-width: 767px) {
+  .tracker-picture {
+    width: auto; /* Imposta la larghezza dell'immagine al 100% del contenitore genitore */
+    height: 200px; /* Imposta l'altezza su 'auto' per mantenere le proporzioni originali */
+  }
+}
+
+/* Utilizzando le utility di Bootstrap per i margini */
+@media (max-width: 575.98px) { /* Dispositivi extra-small */
+  .description-column {
+    margin-left: 0px; /* Rimuovi il margine sinistro */
+    margin-top: 12px; /* Aggiungi un margine superiore */
+  }
+  .landing-page h2{
+    font-size: 1.5rem; 
+  }
+  .landing-page p {
+    font-size: 0.9rem; /* Diminuisci la dimensione del carattere */
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) { /* Dispositivi small */
+  .description-column {
+    margin-left: 12px; /* Mantieni il margine sinistro */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) { /* Dispositivi medium */
+  .description-column {
+    margin-left: 16px; /* Aumenta il margine sinistro */
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) { /* Dispositivi large */
+  .description-column {
+    margin-left: 20px; /* Aumenta ulteriormente il margine sinistro */
+  }
+}
+
+@media (min-width: 1200px) { /* Dispositivi extra-large */
+  .description-column {
+    margin-left: 55px; /* Aumenta ulteriormente il margine sinistro */
+  }
+}
+
 

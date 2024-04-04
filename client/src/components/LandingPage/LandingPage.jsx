@@ -9,9 +9,9 @@ const LandingPage = () => {
       <section>
         <Container>
           <Card className="landing-page">
-            <Card.Body>
+            <Card.Body className="text-center">
               <Row className="gx-5 align-items-center justify-content-center justify-content-lg-between">
-                <Col lg={5}>
+                <Col lg={5} className='description-column'>
                   <h2 className="display-4 lh-1 mb-4">Easy Budget Tracking</h2>
                   <p className="lead fw-normal text-muted mb-5 mb-lg-0">Whether it's buying alcohol, organizing a party, or enjoying other fun activities, Eurasmus Party Tracker helps you manage your budget efficiently. Say goodbye to budget worries and focus on making memories!</p>
                 </Col>
