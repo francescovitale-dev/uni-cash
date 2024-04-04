@@ -17,7 +17,7 @@ const LandingPage = () => {
                 </Col>
                 <Col sm={8} md={6}>
                   <div className="px-5 px-sm-0">
-                    <Card.Img variant="top" src={trackerPicture} alt="tracker picture" className="img-fluid" />
+                    <Card.Img variant="top" src={trackerPicture} alt="tracker picture" className="img-fluid tracker-picture" />
                   </div>
                 </Col>
               </Row>
