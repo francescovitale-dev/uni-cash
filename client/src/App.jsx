@@ -26,7 +26,7 @@ const App = () => {
           <Row>
             <Col className="mb-5">
               <Routes>
-                <Route exact path="/" element={<LandingPage />} />
+                <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/tracker" element={<Tracker />} />
