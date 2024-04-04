@@ -16,7 +16,6 @@ import "./App.css";
 
 const App = () => {
   return (
-    <Router>
       <div className="App">
         <Container>
           <Row>
@@ -37,7 +36,6 @@ const App = () => {
         </Container>
         <Footer />
       </div>
-    </Router>
   );
 };
 
