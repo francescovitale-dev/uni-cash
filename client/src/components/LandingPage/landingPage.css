@@ -13,8 +13,9 @@
 /* Utilizzando i media queries per dispositivi con larghezza massima di 767px (dispositivi small) */
 @media (max-width: 767px) {
   .tracker-picture {
-    width: auto; /* Imposta la larghezza dell'immagine al 100% del contenitore genitore */
-    height: 200px; /* Imposta l'altezza su 'auto' per mantenere le proporzioni originali */
+    width: 100%; /* Imposta la larghezza dell'immagine al 100% del contenitore genitore */
+    height: auto; /* Imposta l'altezza su 'auto' per mantenere le proporzioni originali */
+    max-height: 80vh; /* Imposta l'altezza massima dell'immagine al 80% dell'altezza della viewport */
   }
 }
 
