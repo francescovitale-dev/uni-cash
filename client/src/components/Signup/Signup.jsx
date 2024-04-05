@@ -23,7 +23,7 @@ const Signup = () => {
     e.preventDefault();
     setError(""); // Reset any previous error
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/register", formData);
+      const response = await axios.post("https://eurasmus.onrender.com/api/v1/register", formData);
       if (!response.data.success) {
         setError(response.data.message);
       } else {

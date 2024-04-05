@@ -15,7 +15,7 @@ const ChartTracker = ({ type, chartKey }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/v1/get-transactions/${type}`);
+      const response = await axios.get(`https://eurasmus.onrender.com/api/v1/get-transactions/${type}`);
       const transactions = response.data.data;
 
       const categories = {};
