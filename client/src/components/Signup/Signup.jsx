@@ -50,7 +50,7 @@ const Signup = () => {
             <Form.Group controlId="formBasicName" className="mb-3">
               <Form.Control
                 type="text"
-                placeholder="Enter your name"
+                placeholder="Enter your username"
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}

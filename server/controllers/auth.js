@@ -15,6 +15,14 @@ const register = async (req, res) => {
         .json({ success: false, message: "User already exists" });
     }
 
+    // Check if username is taken
+    user = await User.findOne({ username });
+    if (user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Username already taken" });
+    }
+
     // Check if passwords match
     if (password !== confirmPassword) {
       return res
@@ -50,13 +58,14 @@ const register = async (req, res) => {
   }
 };
 
-
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { identifier, password } = req.body;
 
   try {
-    // Check if user exists
-    const user = await User.findOne({ email });
+    // Check if user exists by email or username
+    const user = await User.findOne({
+      $or: [{ email: identifier }, { username: identifier }],
+    });
     if (!user) {
       return res
         .status(404)
