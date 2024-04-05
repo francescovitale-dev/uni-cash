@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, confirmPassword } = req.body;
 
   try {
     // Check if user exists
@@ -13,6 +13,13 @@ const register = async (req, res) => {
       return res
         .status(400)
         .json({ success: false, message: "User already exists" });
+    }
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Passwords do not match" });
     }
 
     // Create new user
@@ -42,6 +49,7 @@ const register = async (req, res) => {
       });
   }
 };
+
 
 const login = async (req, res) => {
   const { email, password } = req.body;

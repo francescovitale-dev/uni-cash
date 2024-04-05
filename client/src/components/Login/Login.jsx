@@ -14,7 +14,7 @@ const Login = () => {
     setError(null);
     
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/login", { email, password });
+      const response = await axios.post("https://eurasmus.onrender.com/api/v1/login", { email, password });
       localStorage.setItem("token", response.data.token); // Salva il token JWT nel localStorage
       navigate("/tracker"); // Reindirizza l'utente alla pagina 'Tracker'
     } catch (error) {
