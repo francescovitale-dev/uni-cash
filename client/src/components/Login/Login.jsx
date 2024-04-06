@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert, Spinner } from "react-bootstrap";
 
 const Login = () => {
-  const [identifier, setIdentifier] = useState(""); // Cambiato da 'email' a 'identifier'
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // Aggiunto stato di caricamento
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
-    
+    setLoading(true); // Imposta lo stato di caricamento su true
+
     try {
-      const response = await axios.post("https://eurasmus.onrender.com/api/v1/login", { identifier, password }); // Cambiato 'email' a 'identifier'
+      const response = await axios.post("https://eurasmus.onrender.com/api/v1/login", { identifier, password });
       localStorage.setItem("token", response.data.token);
       navigate("/tracker");
     } catch (error) {
@@ -24,6 +26,8 @@ const Login = () => {
         setError("An error occurred while processing your request");
         console.error(error);
       }
+    } finally {
+      setLoading(false); // Resetta lo stato di caricamento anche in caso di errore
     }
   };
 
@@ -34,10 +38,10 @@ const Login = () => {
           <h2 className="text-center mb-4">Login</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleLogin}>
-            <Form.Group controlId="formBasicIdentifier" className="mb-3"> {/* Cambiato 'formBasicEmail' a 'formBasicIdentifier' */}
+            <Form.Group controlId="formBasicIdentifier" className="mb-3">
               <Form.Control 
-                type="text" // Cambiato da 'email' a 'text'
-                placeholder="Enter email or username" // Modificato il placeholder
+                type="text" 
+                placeholder="Enter email or username" 
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 required
@@ -52,8 +56,8 @@ const Login = () => {
                 required
               />
             </Form.Group>
-            <Button variant="primary" type="submit" className="w-100">
-              Login
+            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+              {loading ? <Spinner animation="border" size="sm" /> : "Login"}
             </Button>
             <p className="mt-3 text-center">
               Not registered yet?{" "}
