@@ -8,8 +8,8 @@ const Footer = () => {
     <footer className="footer">
       <Container>
         <Row>
-          <Col md={6} sm={12} >
-            <h3 className='text-center'>About Us</h3>
+          <Col md={6} sm={12} className='text-center' >
+            <h3>About Us</h3>
             <p>We're the Eurasmus Money Tracker team, a bunch of finance enthusiasts who are also passionate about parties! 🎉 <br />We're here to make managing your finances as enjoyable as hitting the dance floor at the hottest Erasmus Fiestas. With our platform, you'll find the tools and guidance you need to take charge of your money and have a blast while doing it. <br />Join us as we turn budgeting into a party! </p>
           </Col>
           <Col md={6} sm={12} className='text-center'>
