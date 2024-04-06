@@ -40,6 +40,7 @@ const Login = () => {
                 placeholder="Enter email or username" // Modificato il placeholder
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
+                required
               />
             </Form.Group>
             <Form.Group controlId="formBasicPassword" className="mb-3">
@@ -48,6 +49,7 @@ const Login = () => {
                 placeholder="Password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </Form.Group>
             <Button variant="primary" type="submit" className="w-100">

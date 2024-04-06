@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from 'sweetalert2'
@@ -12,6 +12,7 @@ const Signup = () => {
     confirmPassword: ""
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // State per indicare se la richiesta è in corso
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -22,6 +23,24 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     setError(""); // Reset any previous error
+    setLoading(true); // Imposta lo stato di caricamento su true
+
+    const { password, confirmPassword } = formData;
+
+    // Check password strength
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError("Password should be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one digit.");
+      setLoading(false); // Resetta lo stato di caricamento
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false); // Resetta lo stato di caricamento
+      return;
+    }
+
     try {
       const response = await axios.post("https://eurasmus.onrender.com/api/v1/register", formData);
       if (!response.data.success) {
@@ -37,6 +56,8 @@ const Signup = () => {
       }
     } catch (error) {
       setError("An error occurred while processing your request");
+    } finally {
+      setLoading(false); // Resetta lo stato di caricamento anche in caso di errore
     }
   };
 
@@ -54,6 +75,7 @@ const Signup = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
             <Form.Group controlId="formBasicEmail" className="mb-3">
@@ -63,6 +85,7 @@ const Signup = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
             <Form.Group controlId="formBasicPassword" className="mb-3">
@@ -72,6 +95,7 @@ const Signup = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
             <Form.Group controlId="formBasicConfirmPassword" className="mb-3">
@@ -81,10 +105,11 @@ const Signup = () => {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
-            <Button variant="primary" type="submit" className="w-100">
-              Sign Up
+            <Button variant="primary" type="submit" className="w-100" disabled={loading}> {/* Disabilita il pulsante durante il caricamento */}
+              {loading ? <Spinner animation="border" size="sm" /> : "Sign Up"} {/* Mostra lo spinner di caricamento se loading è true, altrimenti mostra il testo "Sign Up" */}
             </Button>
             <p className="mt-3 text-center">
               Already have an account?{" "}
