@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const TransactionSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Riferimento al modello dell'utente, assicurati di aver definito il modello dell'utente correttamente
+    required: true
+  },
   title: {
     type: String,
     trim: true,
