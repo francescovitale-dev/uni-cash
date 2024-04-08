@@ -9,7 +9,10 @@ require('dotenv').config();
 const { PORT, MONGO_URL } = process.env;
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://eurasmus.onrender.com']
+}));
+
 app.use(express.json());
 
 // Routes
