@@ -49,14 +49,8 @@ const Tracker = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('token'); // Assume che il token sia memorizzato nel localStorage
-  
     try {
-      await axios.post(`${API_BASE_URL}/add-transaction`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      await axios.post(`${API_BASE_URL}/add-transaction`, formData);
       // Pulisce il form dopo l'invio
       setFormData({
         title: "",
@@ -70,7 +64,6 @@ const Tracker = () => {
       alert("Error adding transaction. Please try again.");
     }
   };
-  
 
   const getCategoryOptions = () => {
     if (formData.type === "income") {
