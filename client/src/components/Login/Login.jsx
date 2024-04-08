@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Container, Row, Col, Form, Button, Alert, Spinner } from "react-bootstrap";
 
@@ -7,32 +7,28 @@ const Login = () => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false); // Aggiunto stato di caricamento
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
-    setLoading(true); // Imposta lo stato di caricamento su true
-
+    setLoading(true);
     try {
       const response = await axios.post("https://eurasmus.onrender.com/api/v1/login", { identifier, password });
       localStorage.setItem("token", response.data.token);
-      navigate("/tracker");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         setError(error.response.data.message);
       } else {
         setError("An error occurred while processing your request");
-        console.error(error);
       }
     } finally {
-      setLoading(false); // Resetta lo stato di caricamento anche in caso di errore
+      setLoading(false);
     }
   };
 
   return (
-    <Container style={{ marginTop: "12rem", marginBottom: "3rem" }}>
+    <Container style={{ marginTop: "15rem", height: "58vh" }}>
       <Row className="justify-content-center mt-5">
         <Col xs={12} md={6}>
           <h2 className="text-center mb-4">Login</h2>

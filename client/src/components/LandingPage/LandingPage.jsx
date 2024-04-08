@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, Row, Col, Button } from "react-bootstrap";
+import { Container, Card, Row, Col } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { Fade } from "react-awesome-reveal";
 import { Link } from "react-router-dom"; // Importa Link da React Router
@@ -23,8 +23,7 @@ const LandingPage = () => {
                   <Fade triggerOnce delay={300} className="mb-5">
                     <p className="lead fw-normal text-muted">
                       Whether it's buying alcohol, organizing a party, or
-                      enjoying other fun activities, Eurasmus Party Tracker
-                      helps you manage your budget efficiently. Say goodbye to
+                      enjoying other fun activities, Eurasmus helps you manage your budget efficiently. Say goodbye to
                       budget worries and focus on making memories!
                       <br />
                       <span>

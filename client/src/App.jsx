@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -20,7 +20,7 @@ const App = () => {
   useEffect(() => {
     // Verifica se l'utente è autenticato, ad esempio controllando la presenza di un token nel localStorage
     const isAuthenticated = localStorage.getItem("token");
-    setAuthenticated(isAuthenticated);
+    setAuthenticated(!!isAuthenticated);
   }, []);
 
   return (
@@ -28,20 +28,16 @@ const App = () => {
         <Container>
           <Row>
             <Col className="mb-5">
-              <Navbar />
+              <Navbar authenticated={authenticated} setAuthenticated={setAuthenticated} />
             </Col>
           </Row>
           <Row>
             <Col className="mb-5">
               <Routes>
-                <Route exact path="/" element={<LandingPage />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                {authenticated ? (
-                  <Route path="/tracker" element={<Tracker />} />
-                ) : (
-                  <Route path="/tracker" element={<Login />} />
-                )}
+                <Route exact path="/" element={authenticated ? <Navigate to="/tracker" /> : <LandingPage />} />
+                <Route path="/login" element={authenticated ? <Navigate to="/tracker" /> : <Login />} />
+                <Route path="/signup" element={authenticated ? <Navigate to="/tracker" /> : <Signup />} />
+                <Route path="/tracker" element={authenticated ? <Tracker /> : <Login />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Col>

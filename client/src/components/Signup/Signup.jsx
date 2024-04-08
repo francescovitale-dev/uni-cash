@@ -62,7 +62,7 @@ const Signup = () => {
   };
 
   return (
-    <Container style={{ marginTop: "12rem", marginBottom: "3rem" }}>
+    <Container style={{ marginTop: "15rem", height: "58vh" }}>
       <Row className="justify-content-center mt-5">
         <Col xs={12} md={6}>
           <h2 className="text-center mb-4">Sign Up</h2>
