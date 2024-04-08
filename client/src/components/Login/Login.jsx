@@ -16,6 +16,7 @@ const Login = () => {
     try {
       const response = await axios.post("https://eurasmus.onrender.com/api/v1/login", { identifier, password });
       localStorage.setItem("token", response.data.token);
+      window.location.reload();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         setError(error.response.data.message);
@@ -52,7 +53,7 @@ const Login = () => {
                 required
               />
             </Form.Group>
-            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+            <Button onClick={handleLogin} variant="primary" type="submit" className="w-100" disabled={loading}>
               {loading ? <Spinner animation="border" size="sm" /> : "Login"}
             </Button>
             <p className="mt-3 text-center">

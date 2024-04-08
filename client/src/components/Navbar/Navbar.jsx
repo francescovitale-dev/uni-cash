@@ -16,7 +16,7 @@ function Header({ authenticated, setAuthenticated }) {
   };
 
   return (
-    <Navbar bg="primary" variant="dark" fixed="top" className="mb-3 shadow" style={{ marginBottom: '20px' }}>
+    <Navbar bg="primary" variant="dark" fixed="top" className="mb-3 shadow">
       <Container fluid>
         <Navbar.Brand as={Link} to="/" className="title">Eurasmus</Navbar.Brand>
         <Nav className="ml-auto">

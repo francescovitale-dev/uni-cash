@@ -15,7 +15,12 @@ const ChartTracker = ({ type, chartKey }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://eurasmus.onrender.com/api/v1/get-transactions/${type}`);
+      const token = localStorage.getItem('token'); // Assume che il token sia memorizzato nel localStorage
+      const response = await axios.get(`https://eurasmus.onrender.com/api/v1/get-transactions/${type}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       const transactions = response.data.data;
 
       const categories = {};
