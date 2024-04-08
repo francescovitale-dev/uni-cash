@@ -1,8 +1,8 @@
 const Transaction = require('../models/transactionSchema');
 
+// Aggiungi una nuova transazione
 const addTransaction = async (req, res) => {
   const { title, amount, category, type } = req.body;
-  const userId = req.user._id; // Assuming you're storing user information in req.user after authentication
 
   try {
     const transaction = await Transaction.create({
@@ -10,7 +10,6 @@ const addTransaction = async (req, res) => {
       amount,
       category,
       type,
-      user: userId, // Salva l'ID dell'utente con la transazione
     });
 
     res.status(201).json({ success: true, data: transaction });
@@ -21,10 +20,8 @@ const addTransaction = async (req, res) => {
 
 // Ottieni tutte le transazioni
 const getTransactions = async (req, res) => {
-  const userId = req.user._id; // Assuming you're storing user information in req.user after authentication
-
   try {
-    const transactions = await Transaction.find({ user: userId });
+    const transactions = await Transaction.find();
     res.status(200).json({ success: true, data: transactions });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -32,11 +29,10 @@ const getTransactions = async (req, res) => {
 };
 
 const getTransactionsByType = async (req, res) => {
-  const userId = req.user._id; // Assuming you're storing user information in req.user after authentication
   const { type } = req.params;
 
   try {
-    const transactions = await Transaction.find({ user: userId, type });
+    const transactions = await Transaction.find({ type });
     res.status(200).json({ success: true, data: transactions });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
