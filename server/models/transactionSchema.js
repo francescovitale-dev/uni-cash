@@ -22,6 +22,11 @@ const TransactionSchema = new mongoose.Schema({
     enum: ['income', 'expense'],
     required: [true, 'Please specify the type of transaction'],
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Transaction', TransactionSchema);
