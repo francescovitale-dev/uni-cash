@@ -4,7 +4,7 @@ import axios from "axios";
 import ChartTracker from "./ChartTracker";
 import Swal from 'sweetalert2'
 
-const API_BASE_URL = "https://eurasmus.onrender.com/api/v1"; // Assicurati di sostituire con il tuo URL API
+const API_BASE_URL = "http://localhost:8080/api/v1"; // Assicurati di sostituire con il tuo URL API
 
 const Tracker = () => {
   const [formData, setFormData] = useState({
@@ -58,7 +58,7 @@ const Tracker = () => {
         category: "",
         type: "",
       });
-      setChartKey(Math.random().toString(36).substring(7)); // Aggiorna la chiave per forzare il rirender del componente ChartTracker
+      setChartKey(Math.random().toString(36).substring(7));
     } catch (error) {
       console.error("Error adding transaction:", error);
       alert("Error adding transaction. Please try again.");
