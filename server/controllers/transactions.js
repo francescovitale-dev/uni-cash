@@ -1,4 +1,5 @@
 const Transaction = require('../models/transactionSchema');
+const jwt_decode = require('jwt-decode');
 
 // Aggiungi una nuova transazione
 const addTransaction = async (req, res) => {
