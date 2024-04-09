@@ -3,7 +3,9 @@ const Transaction = require('../models/transactionSchema');
 // Aggiungi una nuova transazione
 const addTransaction = async (req, res) => {
   const { title, amount, category, type } = req.body;
-  const userId = req.user.id; // Recupera l'ID dell'utente dal token JWT
+  const token = req.header.token;
+  const userData =  jwt_decode(token)
+  const userId = userData.userId;
 
   try {
     const transaction = await Transaction.create({
@@ -23,7 +25,9 @@ const addTransaction = async (req, res) => {
 
 // Ottieni tutte le transazioni
 const getTransactions= async (req, res) => {
-  const userId = req.user.id; // Recupera l'ID dell'utente dal token JWT
+  const token = req.header.token;
+  const userData =  jwt_decode(token)
+  const userId = userData.userId;
 
   try {
     const transactions = await Transaction.find({ userId });
@@ -36,7 +40,9 @@ const getTransactions= async (req, res) => {
 
 const getTransactionsByType = async (req, res) => {
   const { type } = req.params;
-  const userId = req.user.id; // Recupera l'ID dell'utente dal token JWT
+  const token = req.header.token;
+  const userData =  jwt_decode(token)
+  const userId = userData.userId;
 
   try {
     const transactions = await Transaction.find({ type, userId });
@@ -50,7 +56,9 @@ const getTransactionsByType = async (req, res) => {
 // Elimina una transazione
 const deleteTransaction = async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id; // Recupera l'ID dell'utente dal token JWT
+  const token = req.header.token;
+  const userData =  jwt_decode(token)
+  const userId = userData.userId;
 
   try {
     const transaction = await Transaction.findOneAndDelete({ _id: id, userId });
