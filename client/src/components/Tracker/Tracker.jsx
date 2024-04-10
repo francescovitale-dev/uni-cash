@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import ChartTracker from "./ChartTracker";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 const API_BASE_URL = "https://eurasmus.onrender.com/api/v1"; // Assicurati di sostituire con il tuo URL API
 
@@ -16,14 +16,15 @@ const Tracker = () => {
 
   const [transactionsAvailable, setTransactionsAvailable] = useState(false);
   const [chartKey, setChartKey] = useState(""); // Aggiungi uno stato per forzare il rirender del componente
+  const [firstTransactionAdded, setFirstTransactionAdded] = useState(false);
 
   const checkTransactionsAvailability = async () => {
     try {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       const response = await axios.get(`${API_BASE_URL}/get-transactions`, {
         headers: {
-          Authorization: `Bearer ${token}` // Includi il token nell'header della richiesta
-        }
+          Authorization: `Bearer ${token}`, // Includi il token nell'header della richiesta
+        },
       });
       const transactions = response.data.data;
       if (Array.isArray(transactions)) {
@@ -44,10 +45,10 @@ const Tracker = () => {
     const { name, value } = e.target;
     if (name === "amount" && parseFloat(value) <= 0) {
       return Swal.fire({
-        text: 'Amount must be greater than 0!',
-        icon: 'info',
-        confirmButtonText: 'Cool'
-      })
+        text: "Amount must be greater than 0!",
+        icon: "info",
+        confirmButtonText: "Cool",
+      });
     }
 
     setFormData({
@@ -59,11 +60,11 @@ const Tracker = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       await axios.post(`${API_BASE_URL}/add-transaction`, formData, {
         headers: {
-          "Authorization": `Bearer ${token}` // Includi il token nell'header della richiesta POST
-        }
+          Authorization: `Bearer ${token}`, // Includi il token nell'header della richiesta POST
+        },
       });
       // Pulisce il form dopo l'invio
       setFormData({
@@ -73,6 +74,12 @@ const Tracker = () => {
         type: "",
       });
       setChartKey(Math.random().toString(36).substring(7));
+
+      // Check if this is the first transaction being added.
+      if (!firstTransactionAdded) {
+        checkTransactionsAvailability();
+        setFirstTransactionAdded(true);
+      }
     } catch (error) {
       console.error("Error adding transaction:", error);
       alert("Error adding transaction. Please try again.");
@@ -177,11 +184,7 @@ const Tracker = () => {
                 required
               />
             </Form.Group>
-            <Button
-              className="w-100 mt-3"
-              variant="primary"
-              type="submit"
-            >
+            <Button className="w-100 mt-3" variant="primary" type="submit">
               Add Transaction
             </Button>
           </Form>
@@ -191,11 +194,19 @@ const Tracker = () => {
               <Row>
                 <Col md={6} sm={12}>
                   <hr style={{ margin: "20px 0" }} />
-                  <ChartTracker key="income" type="income" chartKey={chartKey} />
+                  <ChartTracker
+                    key="income"
+                    type="income"
+                    chartKey={chartKey}
+                  />
                 </Col>
                 <Col md={6} sm={12}>
                   <hr style={{ margin: "20px 0" }} />
-                  <ChartTracker key="expense" type="expense" chartKey={chartKey} />
+                  <ChartTracker
+                    key="expense"
+                    type="expense"
+                    chartKey={chartKey}
+                  />
                 </Col>
               </Row>
             </Container>
