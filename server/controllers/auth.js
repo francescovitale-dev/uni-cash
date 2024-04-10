@@ -48,13 +48,11 @@ const register = async (req, res) => {
       .status(201)
       .json({ success: true, message: "User registered successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Registration failed",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Registration failed",
+      error: error.message,
+    });
   }
 };
 
@@ -81,9 +79,16 @@ const login = async (req, res) => {
     }
 
     // Create JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const secret = process.env.JWT_SECRET;
+    const token = jwt.sign(
+      {
+        userId: user._id, // Assuming user ID is stored in the _id field
+      },
+      secret,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     res.status(200).json({ success: true, token });
   } catch (error) {
@@ -126,13 +131,11 @@ const changePassword = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Password changed successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Failed to change password",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Failed to change password",
+      error: error.message,
+    });
   }
 };
 

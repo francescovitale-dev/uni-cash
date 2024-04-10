@@ -1,19 +1,23 @@
-// const jwt = require('jsonwebtoken');
+// middlewareAuth.js
 
-// const authenticateJWT = (req, res, next) => {
-//   const token = req.headers.authorization;
+const jwt = require('jsonwebtoken');
 
-//   if (!token) {
-//     return res.status(401).json({ success: false, message: 'Missing authorization token' });
-//   }
+const authenticateJWT = (req, res, next) => {
+  const token = req.headers.authorization;
 
-//   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-//     if (err) {
-//       return res.status(403).json({ success: false, message: 'Invalid token' });
-//     }
-//     req.user = decoded; // Aggiungi i dati dell'utente decodificati all'oggetto req per le successive elaborazioni
-//     next();
-//   });
-// };
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'Missing authorization token' });
+  }
 
-// module.exports = authenticateJWT;
+  jwt.verify(token.split(" ")[1], process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      console.error('JWT verification error:', err);
+      return res.status(403).json({ success: false, message: 'Invalid token' });
+    }
+    req.user = decoded;
+    console.log('User authenticated:', req.user);
+    next();
+  });
+};
+
+module.exports = authenticateJWT;
