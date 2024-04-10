@@ -14,8 +14,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  },
-  _id: mongoose.Schema.Types.ObjectId // Aggiunta del campo _id
+  }
 });
 
 module.exports = mongoose.model('User', UserSchema);
