@@ -15,8 +15,11 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post("https://eurasmus.onrender.com/api/v1/login", { identifier, password });
-      localStorage.setItem("token", response.data.token);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      console.log(token)
       window.location.reload();
+    
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         setError(error.response.data.message);

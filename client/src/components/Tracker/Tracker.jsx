@@ -4,7 +4,7 @@ import axios from "axios";
 import ChartTracker from "./ChartTracker";
 import Swal from 'sweetalert2'
 
-const API_BASE_URL = "http://localhost:8080/api/v1"; // Assicurati di sostituire con il tuo URL API
+const API_BASE_URL = "https://eurasmus.onrender.com/api/v1"; // Assicurati di sostituire con il tuo URL API
 
 const Tracker = () => {
   const [formData, setFormData] = useState({
@@ -15,13 +15,22 @@ const Tracker = () => {
   });
 
   const [transactionsAvailable, setTransactionsAvailable] = useState(false);
-  const [chartKey, setChartKey] = useState(""); // Aggiungi uno stato per forzare il rirender del componente ChartTracker
+  const [chartKey, setChartKey] = useState(""); // Aggiungi uno stato per forzare il rirender del componente
 
   const checkTransactionsAvailability = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/get-transactions`);
+      const token = localStorage.getItem("token")
+      const response = await axios.get(`${API_BASE_URL}/get-transactions`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Includi il token nell'header della richiesta
+        }
+      });
       const transactions = response.data.data;
-      setTransactionsAvailable(transactions.length > 0);
+      if (Array.isArray(transactions)) {
+        setTransactionsAvailable(transactions.length > 0);
+      } else {
+        console.error("Invalid response format:", response.data);
+      }
     } catch (error) {
       console.error("Error checking transactions availability:", error);
     }
@@ -50,7 +59,12 @@ const Tracker = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_BASE_URL}/add-transaction`, formData);
+      const token = localStorage.getItem('token');
+      await axios.post(`${API_BASE_URL}/add-transaction`, formData, {
+        headers: {
+          "Authorization": `Bearer ${token}` // Includi il token nell'header della richiesta POST
+        }
+      });
       // Pulisce il form dopo l'invio
       setFormData({
         title: "",
