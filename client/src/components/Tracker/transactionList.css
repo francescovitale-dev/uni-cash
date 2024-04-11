@@ -1,0 +1,23 @@
+/* transactionList.css */
+
+/* Applica stili per rendere la tabella più responsiva */
+.transaction-table-wrapper {
+  overflow-x: auto;
+}
+
+/* Regola la larghezza della tabella per adattarsi alle dimensioni dello schermo */
+.transaction-table {
+  width: 100%;
+}
+
+.incomes-type h2 {
+  border-bottom: 1px solid #5498ff; /* Colore della linea */
+  padding-bottom: 15px; /* Spazio sotto la linea */
+  margin-bottom: 15px; /* Spazio tra il titolo e la tabella */
+}
+
+.transactions-type h2 {
+  border-bottom: 1px solid #DC3545; /* Colore della linea */
+  padding-bottom: 15px; /* Spazio sotto la linea */
+  margin-bottom: 15px; /* Spazio tra il titolo e la tabella */
+}
