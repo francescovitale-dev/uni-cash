@@ -26,7 +26,11 @@ const TransactionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Riferimento al modello utente
     required: true
-  }
+  }, 
+  timestamp: {
+    type: Date,
+    default: Date.now, // Imposta il valore predefinito al momento della creazione
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Transaction', TransactionSchema);
