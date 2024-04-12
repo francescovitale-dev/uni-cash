@@ -42,9 +42,9 @@ To use Eurasmus, follow these steps:
 
 ## Demo
 
-![screenshot](src/assets//img/trackerPicture.png)
+![screenshot](client/src/assets/img/trackerPicture.png)
 
-Check out Eurasmus: [Eurasmus](https://eurasmus.netlify.app/)
+Check out [Eurasmus](https://eurasmus.netlify.app/)
 
 ## Credits
 
