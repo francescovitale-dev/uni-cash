@@ -98,12 +98,11 @@ const login = async (req, res) => {
   }
 };
 
-// Funzione per la modifica della password
+
 const changePassword = async (req, res) => {
   const { email, currentPassword, newPassword } = req.body;
 
   try {
-    // Trova l'utente dal database utilizzando l'email come identificatore
     const user = await User.findOne({ email });
     if (!user) {
       return res
@@ -111,7 +110,6 @@ const changePassword = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    // Verifica la password attuale
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
       return res
@@ -119,11 +117,10 @@ const changePassword = async (req, res) => {
         .json({ success: false, message: "Current password is incorrect" });
     }
 
-    // Hash della nuova password
+    // Hash
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    // Aggiorna la password dell'utente nel database
     user.password = hashedPassword;
     await user.save();
 

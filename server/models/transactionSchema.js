@@ -24,12 +24,12 @@ const TransactionSchema = new mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Riferimento al modello utente
+    ref: 'User', 
     required: true
   }, 
   timestamp: {
     type: Date,
-    default: Date.now, // Imposta il valore predefinito al momento della creazione
+    default: Date.now,
   },
 }, { timestamps: true });
 

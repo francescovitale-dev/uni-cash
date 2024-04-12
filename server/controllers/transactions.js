@@ -1,10 +1,8 @@
 const Transaction = require('../models/transactionSchema');
 
-// Aggiungi una nuova transazione
 const addTransaction = async (req, res) => {
   const { title, amount, category, type } = req.body;
-  const userId = req.user.userId; // Assume che l'ID dell'utente sia disponibile nel token JWT come req.user.id
-
+  const userId = req.user.userId; 
   try {
     const transaction = await Transaction.create({
       title,
@@ -12,7 +10,7 @@ const addTransaction = async (req, res) => {
       category,
       type,
       user: userId,
-      timestamp: new Date(), // Imposta il timestamp alla data e ora correnti
+      timestamp: new Date(), 
     });
 
     res.status(201).json({ success: true, data: transaction });
@@ -21,7 +19,7 @@ const addTransaction = async (req, res) => {
   }
 };
 
-// Ottieni tutte le transazioni
+
 const getTransactions = async (req, res) => {
   const userId = req.user.userId;
   const currentDate = new Date();
@@ -42,7 +40,7 @@ const getTransactions = async (req, res) => {
 
 
 const getTransactionsByType = async (req, res) => {
-  const userId = req.user.userId; // Assume che l'ID dell'utente sia disponibile nel token JWT come req.user.id
+  const userId = req.user.userId; 
   const { type } = req.params;
   const currentDate = new Date();
   const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -61,9 +59,9 @@ const getTransactionsByType = async (req, res) => {
 };
 
 
-// Elimina una transazione
+
 const deleteTransaction = async (req, res) => {
-  const userId = req.user.userId; // Assume che l'ID dell'utente sia disponibile nel token JWT come req.user.id
+  const userId = req.user.userId; 
   const { id } = req.params;
 
   try {
