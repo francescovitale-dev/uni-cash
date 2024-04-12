@@ -37,7 +37,7 @@ const App = () => {
                 <Route exact path="/" element={authenticated ? <Navigate to="/tracker" /> : <LandingPage />} />
                 <Route path="/login" element={authenticated ? <Navigate to="/tracker" /> : <Login />} />
                 <Route path="/signup" element={authenticated ? <Navigate to="/tracker" /> : <Signup />} />
-                <Route path="/tracker" element={authenticated ? <Tracker /> : <Login />} />
+                <Route path="/tracker" element={authenticated ? <Tracker /> : <Navigate to="/login" />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Col>

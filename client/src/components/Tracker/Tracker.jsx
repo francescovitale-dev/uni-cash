@@ -42,6 +42,16 @@ const Tracker = () => {
       setTransactions(response.data.data);
     } catch (error) {
       console.error("Error fetching transactions:", error);
+      if (error.response && error.response.status === 403) {
+        localStorage.removeItem("token");
+        Swal.fire({
+          text: "Your session has expired. Please login again.",
+          icon: "info",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          window.location.reload();
+        });
+      }
     }
   };
 
@@ -76,10 +86,6 @@ const Tracker = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // const currentDate = new Date();
-      // console.log(currentDate);
-      // const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-      // const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       const token = localStorage.getItem("token");
       await axios.post(`${API_BASE_URL}/add-transaction`, formData, {
         headers: {
@@ -102,7 +108,22 @@ const Tracker = () => {
       }
     } catch (error) {
       console.error("Error adding transaction:", error);
-      alert("Error adding transaction. Please try again.");
+      if (error.response && error.response.status === 403) {
+        localStorage.removeItem("token");
+        Swal.fire({
+          text: "Your session has expired. Please login again.",
+          icon: "info",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          text: "Error adding transaction. Please try again.",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
     }
   };
 
