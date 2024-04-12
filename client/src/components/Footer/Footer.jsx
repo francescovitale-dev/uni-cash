@@ -1,7 +1,7 @@
 // Footer.js
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import './footer.css'; // Importa il file di stili per il footer
+import './footer.css'; 
 
 const Footer = () => {
   return (
@@ -15,15 +15,15 @@ const Footer = () => {
           <Col md={6} sm={12} className='text-center'>
             <div>
             <h3>Contact Us</h3>
-            <p>Email: example@example.com <br />
+            <p>Email: info@eurasmus.com <br />
               Phone: +1 555-555-5555 </p>
               <h3>Follow Us</h3>
             </div>
             <div>
             <ul className="social-icons">
-              <li><a href="#"><i className="bi bi-facebook"></i></a></li>
-              <li><a href="#"><i className="bi bi-twitter"></i></a></li>
-              <li><a href="#"><i className="bi bi-instagram"></i></a></li>
+              <li><a href="https://www.facebook.com/"><i className="bi bi-facebook"></i></a></li>
+              <li><a href="https://www.twitter.com/"><i className="bi bi-twitter"></i></a></li>
+              <li><a href="https://www.instagram.com/"><i className="bi bi-instagram"></i></a></li>
             </ul>
             </div>
           </Col>

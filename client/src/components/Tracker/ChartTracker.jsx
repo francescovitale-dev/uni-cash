@@ -15,17 +15,10 @@ const ChartTracker = ({ type, chartKey }) => {
 
   const fetchData = async () => {
     try {
-    const currentDate = new Date();
-    const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-    const token = localStorage.getItem('token'); // Ottieni il token JWT memorizzato nel localStorage
+    const token = localStorage.getItem('token'); 
     const response = await axios.get(`https://eurasmus.onrender.com/api/v1/get-transactions/${type}`, {
       headers: {
-        "Authorization": `Bearer ${token}` // Includi il token nell'header della richiesta
-      },
-      params: {
-        start: startOfMonth.toISOString(), // Converti in stringa ISO per la compatibilità con la richiesta API
-        end: endOfMonth.toISOString()
+        "Authorization": `Bearer ${token}` 
       }
     });
     const transactions = response.data.data;
@@ -85,8 +78,8 @@ const ChartTracker = ({ type, chartKey }) => {
               callbacks: {
                 label: (context) => {
                   const label = context.label || '';
-                  const value = context.parsed || 0; // Prendi il valore corretto dal contesto
-                  return `${label}: ${value.toLocaleString()} EUR`; // Formatta il valore 
+                  const value = context.parsed || 0; 
+                  return `${label}: ${value.toLocaleString()} EUR`; 
                 }
               }
             },
@@ -96,8 +89,8 @@ const ChartTracker = ({ type, chartKey }) => {
             }
           },
           animation: {
-            duration: 2000, // Durata dell'animazione in millisecondi
-            easing: 'easeInOutQuart' // Easing function per l'animazione
+            duration: 2000, 
+            easing: 'easeInOutQuart' 
           },
           hover: {
             mode: 'nearest',

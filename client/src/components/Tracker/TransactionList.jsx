@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Card, Col, Row, Table } from "react-bootstrap";
 import axios from "axios";
-import "./transactionList.css"; // Importa il foglio di stile CSS
+import "./transactionList.css"; 
 
 const API_BASE_URL = "https://eurasmus.onrender.com/api/v1";
 
@@ -12,7 +12,7 @@ const TransactionList = ({ transactions, onDelete, handleList }) => {
       await axios.delete(`${API_BASE_URL}/delete-transaction/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
-        },
+        }
       });
       onDelete(id);
 

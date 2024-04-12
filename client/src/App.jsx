@@ -12,13 +12,11 @@ import Signup from "./components/Signup/Signup";
 import LandingPage from "./components/LandingPage/LandingPage";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
-import "./App.css";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Verifica se l'utente è autenticato, ad esempio controllando la presenza di un token nel localStorage
     const isAuthenticated = localStorage.getItem("token");
     setAuthenticated(!!isAuthenticated);
   }, []);

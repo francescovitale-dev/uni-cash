@@ -1,14 +1,13 @@
 .chart-container {
-  width: 100%; /* Larghezza del container */
+  width: 100%; 
 }
 
 .chart-canvas {
-  width: 100%; /* Larghezza del canvas */
-  height: 400px; /* Altezza del canvas */
-  margin-top: 20px; /* Margine superiore */
+  width: 100%; 
+  height: 400px; 
+  margin-top: 20px; 
 }
 
-/* Nel tuo file CSS */
 .total-expenses {
   font-size: 18px;
   font-weight: bold;

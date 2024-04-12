@@ -10,50 +10,48 @@
   width: 100%;
 }
 
-/* Utilizzando i media queries per dispositivi con larghezza massima di 767px (dispositivi small) */
 @media (max-width: 767px) {
   .tracker-picture {
-    width: 100%; /* Imposta la larghezza dell'immagine al 100% del contenitore genitore */
-    height: auto; /* Imposta l'altezza su 'auto' per mantenere le proporzioni originali */
-    max-height: 80vh; /* Imposta l'altezza massima dell'immagine al 80% dell'altezza della viewport */
+    width: 100%; 
+    height: auto; 
+    max-height: 80vh; 
   }
 }
 
-/* Utilizzando le utility di Bootstrap per i margini */
-@media (max-width: 575.98px) { /* Dispositivi extra-small */
+@media (max-width: 575.98px) { 
   .description-column {
-    margin-left: 0px; /* Rimuovi il margine sinistro */
-    margin-top: 12px; /* Aggiungi un margine superiore */
+    margin-left: 0px; 
+    margin-top: 12px; 
   }
   .landing-page h2{
     font-size: 1.7rem; 
   }
   .landing-page p {
-    font-size: 1.1rem; /* Diminuisci la dimensione del carattere */
+    font-size: 1.1rem; 
   }
 }
 
-@media (min-width: 576px) and (max-width: 767.98px) { /* Dispositivi small */
+@media (min-width: 576px) and (max-width: 767.98px) { 
   .description-column {
-    margin-left: 12px; /* Mantieni il margine sinistro */
+    margin-left: 12px; 
   }
 }
 
-@media (min-width: 768px) and (max-width: 991.98px) { /* Dispositivi medium */
+@media (min-width: 768px) and (max-width: 991.98px) { 
   .description-column {
-    margin-left: 16px; /* Aumenta il margine sinistro */
+    margin-left: 16px; 
   }
 }
 
-@media (min-width: 992px) and (max-width: 1199.98px) { /* Dispositivi large */
+@media (min-width: 992px) and (max-width: 1199.98px) {
   .description-column {
-    margin-left: 20px; /* Aumenta ulteriormente il margine sinistro */
+    margin-left: 20px; 
   }
 }
 
-@media (min-width: 1200px) { /* Dispositivi extra-large */
+@media (min-width: 1200px) { 
   .description-column {
-    margin-left: 55px; /* Aumenta ulteriormente il margine sinistro */
+    margin-left: 55px; 
   }
 }
 

@@ -6,7 +6,7 @@ import ChartTracker from "./ChartTracker";
 import Swal from "sweetalert2";
 import TransactionList from "./TransactionList";
 
-const API_BASE_URL = "https://eurasmus.onrender.com/api/v1"; // Assicurati di sostituire con il tuo URL API
+const API_BASE_URL = "https://eurasmus.onrender.com/api/v1"; 
 
 const Tracker = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ const Tracker = () => {
 
   const currentMonth = format(new Date(), "MMMM");
   const [transactions, setTransactions] = useState([]);
-  const [chartKey, setChartKey] = useState(""); // Aggiungi uno stato per forzare il rirender del componente
+  const [chartKey, setChartKey] = useState(""); 
   const [firstTransactionAdded, setFirstTransactionAdded] = useState(false);
   const [showTransactions, setShowTransactions] = useState(false);
 
@@ -89,10 +89,10 @@ const Tracker = () => {
       const token = localStorage.getItem("token");
       await axios.post(`${API_BASE_URL}/add-transaction`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`, // Includi il token nell'header della richiesta POST
+          Authorization: `Bearer ${token}`, 
         },
       });
-      // Pulisce il form dopo l'invio
+      // Clean the form
       setFormData({
         title: "",
         amount: "",
