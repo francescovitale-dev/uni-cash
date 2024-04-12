@@ -32,17 +32,11 @@ To use Eurasmus, follow these steps:
     npm install
     ```
 
-4. Start the application:
-
-    ```bash
-    npm start
-    ```
-
-5. Access the application through your web browser at http://localhost:3000
+4. Access the application through your web browser.
 
 ## Demo
 
-![screenshot](client/src/assets/img/trackerPicture.png)
+![screenshot](client/src/assets/img/trackerPicture2.png)
 
 Check out [Eurasmus](https://eurasmus.netlify.app/)
 
