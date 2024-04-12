@@ -11,7 +11,7 @@ const Footer = () => {
           <Col md={6} sm={12} className="text-center">
             <h3>About Us</h3>
             <p>
-              We're the Eurasmus Money Tracker team, a bunch of finance
+              We're a bunch of finance
               enthusiasts who are also passionate about parties! 🎉 <br />
               We're here to make managing your finances as enjoyable as hitting
               the dance floor at the hottest Erasmus Fiestas. With our platform,

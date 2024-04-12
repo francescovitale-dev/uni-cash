@@ -23,7 +23,8 @@ const LandingPage = () => {
                   <Fade triggerOnce delay={300} className="mb-5">
                     <p className="lead fw-normal text-muted">
                       Whether it's buying alcohol, organizing a party, or
-                      enjoying other fun activities, Eurasmus helps you manage your budget efficiently. Say goodbye to
+                      enjoying other fun activities, Eurasmus helps you manage your budget efficiently. <br /> Eurasmus is designed with Erasmus students in mind, offering a simple solution for tracking expenses during your time abroad. <br />
+                      Say goodbye to
                       budget worries and focus on making memories!
                       <br />
                       <span>
