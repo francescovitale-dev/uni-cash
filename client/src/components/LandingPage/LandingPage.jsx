@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Fade } from "react-awesome-reveal";
 import { Link } from "react-router-dom"; // Importa Link da React Router
 import "./landingPage.css";
-import trackerPicture from "../../assets/img/trackerPicture.png";
+import trackerPicture from "../../assets/img/trackerPicture.webp";
 
 const LandingPage = () => {
   return (
