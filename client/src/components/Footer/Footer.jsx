@@ -53,7 +53,7 @@ const Footer = () => {
         </Row>
         <hr className="divider" />
         <p className="text-center">
-          &copy; 2024 Eurasmus. All rights reserved.
+          &copy; 2024 Eurasmus. All rights reserved. <br /> Created by <a className="personal-link" href="https://vitalefrancesco.com" target="_blank">Francesco Vitale</a>.
         </p>
       </Container>
     </footer>
