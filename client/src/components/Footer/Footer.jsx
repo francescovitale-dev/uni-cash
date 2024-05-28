@@ -17,7 +17,7 @@ const Footer = () => {
               the dance floor at the hottest Erasmus Fiestas. With our platform,
               you'll find the tools and guidance you need to take charge of your
               money and have a blast while doing it. <br />
-              Join us as we turn budgeting into a party!{" "}
+              Join us as we turn budgeting into a party!
             </p>
           </Col>
           <Col md={6} sm={12} className="text-center">
@@ -25,25 +25,25 @@ const Footer = () => {
               <h3>Contact Us</h3>
               <p>
                 Email: info@eurasmus.com <br />
-                Phone: +1 555-555-5555{" "}
+                Phone: +1 555-555-5555
               </p>
               <h3>Follow Us</h3>
             </div>
             <div>
               <ul className="social-icons">
                 <li>
-                  <a href="https://www.facebook.com/" target="_blank">
-                    <i className="bi bi-facebook"></i>
+                  <a href="https://www.vitalefrancesco.com/" target="_blank">
+                    <i className="bi bi-link"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="https://www.twitter.com/" target="_blank">
-                    <i className="bi bi-twitter"></i>
+                  <a href="https://www.linkedin.com/in/francesco-vitale--/" target="_blank">
+                    <i className="bi bi-linkedin"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="https://www.instagram.com/" target="_blank">
-                    <i className="bi bi-instagram"></i>
+                  <a href="https://github.com/francescovitale-dev" target="_blank">
+                    <i className="bi bi-github"></i>
                   </a>
                 </li>
               </ul>
