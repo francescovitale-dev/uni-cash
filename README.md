@@ -19,7 +19,7 @@ To use UniCash, follow these steps:
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/francescovitale-dev/unicash.git
+    git clone https://github.com/francescovitale-dev/eurasmus.git
     ```
 
 2. Navigate to the project directory:
@@ -44,7 +44,7 @@ To use UniCash, follow these steps:
 
 ## Demo
 
-Check out [UniCash](https://unicash.netlify.app/)
+Check out [UniCash](https://uni-cash.netlify.app/)
 
 ## Technologies Used
 
