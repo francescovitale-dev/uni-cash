@@ -1,12 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { format } from "date-fns";
+import { motion, AnimatePresence } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  PlusCircle,
+  List,
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  ArrowUpDown
+} from "lucide-react";
 import ChartTracker from "./ChartTracker";
-import Swal from "sweetalert2";
 import TransactionList from "./TransactionList";
 
-const API_BASE_URL = "https://eurasmus.onrender.com/api/v1"; 
+const API_BASE_URL = "https://eurasmus.onrender.com/api/v1";
 
 const Tracker = () => {
   const [formData, setFormData] = useState({
@@ -15,72 +34,61 @@ const Tracker = () => {
     category: "",
     type: "",
   });
-
-  const currentMonth = format(new Date(), "MMMM");
   const [transactions, setTransactions] = useState([]);
-  const [chartKey, setChartKey] = useState(""); 
-  const [firstTransactionAdded, setFirstTransactionAdded] = useState(false);
-  const [showTransactions, setShowTransactions] = useState(false);
-
-  const handleList = () => {
-    if (!showTransactions) {
-      setShowTransactions(true);
-    } else {
-      setShowTransactions(false);
-    }
-    fetchTransactions();
-  };
+  const [chartKey, setChartKey] = useState("");
+  const [activeTab, setActiveTab] = useState("add");
+  const [summary, setSummary] = useState({ income: 0, expense: 0, balance: 0 });
+  const { toast } = useToast();
+  const currentMonth = format(new Date(), "MMMM");
 
   const fetchTransactions = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(`${API_BASE_URL}/get-transactions`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setTransactions(response.data.data);
+      calculateSummary(response.data.data);
     } catch (error) {
       console.error("Error fetching transactions:", error);
-      if (error.response && error.response.status === 403) {
-        localStorage.removeItem("token");
-        Swal.fire({
-          text: "Your session has expired. Please login again.",
-          icon: "info",
-          confirmButtonText: "Ok",
-        }).then(() => {
-          window.location.reload();
-        });
-      }
+      if (error.response?.status === 403) handleSessionExpired();
     }
+  };
+
+  const calculateSummary = (transactions) => {
+    const summary = transactions.reduce(
+      (acc, { type, amount }) => {
+        acc[type] += amount;
+        return acc;
+      },
+      { income: 0, expense: 0 }
+    );
+    summary.balance = summary.income - summary.expense;
+    setSummary(summary);
   };
 
   useEffect(() => {
     fetchTransactions();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (name, value) => {
     if (name === "amount" && parseFloat(value) <= 0) {
-      return Swal.fire({
-        text: "Amount must be greater than 0!",
-        icon: "info",
-        confirmButtonText: "Cool",
+      toast({
+        title: "Invalid Amount",
+        description: "Amount must be greater than 0!",
+        variant: "destructive",
       });
+      return;
     }
-
     if (value.length > 16) {
-      return Swal.fire({
-        text: "The amount should not exceed 16 characters!",
-        icon: "info",
-        confirmButtonText: "Cool",
+      toast({
+        title: "Invalid Input",
+        description: "The input should not exceed 16 characters!",
+        variant: "destructive",
       });
+      return;
     }
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -88,212 +96,201 @@ const Tracker = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(`${API_BASE_URL}/add-transaction`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`, 
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-      // Clean the form
-      setFormData({
-        title: "",
-        amount: "",
-        category: "",
-        type: "",
-      });
+      setFormData({ title: "", amount: "", category: "", type: "" });
       setChartKey(Math.random().toString(36).substring(7));
-
-      // Check if this is the first transaction being added.
-      if (!firstTransactionAdded) {
-        fetchTransactions();
-        setFirstTransactionAdded(true);
-      }
+      fetchTransactions();
+      toast({
+        title: "Success",
+        description: "Transaction added successfully",
+      });
     } catch (error) {
       console.error("Error adding transaction:", error);
-      if (error.response && error.response.status === 403) {
-        localStorage.removeItem("token");
-        Swal.fire({
-          text: "Your session has expired. Please login again.",
-          icon: "info",
-          confirmButtonText: "Ok",
-        }).then(() => {
-          window.location.reload();
-        });
+      if (error.response?.status === 403) {
+        handleSessionExpired();
       } else {
-        Swal.fire({
-          text: "Error adding transaction. Please try again.",
-          icon: "error",
-          confirmButtonText: "Ok",
+        toast({
+          title: "Error",
+          description: "Error adding transaction. Please try again.",
+          variant: "destructive",
         });
       }
     }
+  };
+
+  const handleSessionExpired = () => {
+    localStorage.removeItem("token");
+    toast({
+      title: "Session Expired",
+      description: "Your session has expired. Please login again.",
+      variant: "destructive",
+    });
+    window.location.reload();
   };
 
   const getCategoryOptions = () => {
-    if (formData.type === "income") {
-      return (
-        <>
-          <option value="">Select category</option>
-          <option value="Scholarship">Scholarship</option>
-          <option value="Part-time Job">Part-time Job</option>
-          <option value="Parental Support">Parental Support</option>
-          <option value="Freelancing">Freelancing</option>
-          <option value="Grants">Grants</option>
-          <option value="Tutoring">Tutoring</option>
-          <option value="Selling Stuff">Selling Stuff</option>
-          <option value="Other Income">Other Income</option>
-        </>
-      );
-    } else if (formData.type === "expense") {
-      return (
-        <>
-          <option value="">Select category</option>
-          <option value="Alcohol">Alcohol</option>
-          <option value="Party">Party</option>
-          <option value="Food">Food</option>
-          <option value="Rent">Rent</option>
-          <option value="Utilities">Utilities</option>
-          <option value="Transportation">Transportation</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Other Expense">Other Expense</option>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <option value="">Select type first</option>
-        </>
-      );
-    }
+    const options = {
+      income: [
+        "Scholarship",
+        "Part-time Job",
+        "Parental Support",
+        "Freelancing",
+        "Grants",
+        "Tutoring",
+        "Selling Stuff",
+        "Other Income",
+      ],
+      expense: [
+        "Alcohol",
+        "Party",
+        "Food",
+        "Rent",
+        "Utilities",
+        "Transportation",
+        "Entertainment",
+        "Other Expense",
+      ],
+    };
+    return (options[formData.type] || []).map((value) => ({
+      value,
+      label: value,
+    }));
   };
 
   return (
-    <Container className="d-flex align-items-center justify-content-center mt-5">
-      {!showTransactions && (
-        <Card
-          style={{
-            width: "40rem",
-            borderRadius: "20px",
-            marginTop: "4rem",
-            marginBottom: "4rem",
-          }}
-          className="mx-auto"
-        >
-          <Card.Body>
-            <Card.Title className="text-center" style={{ color: "#0D6EFD" }}>
-              Money Tracker - {currentMonth}
-            </Card.Title>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="type">
-                <Form.Label>Type</Form.Label>
-                <Form.Control
-                  className="mb-3"
-                  as="select"
-                  name="type"
-                  value={formData.type}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select type</option>
-                  <option value="income">Income</option>
-                  <option value="expense">Expense</option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group controlId="category">
-                <Form.Label>Category</Form.Label>
-                <Form.Control
-                  className="mb-3"
-                  as="select"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  required
-                >
-                  {getCategoryOptions()}
-                </Form.Control>
-              </Form.Group>
-              <Form.Group controlId="title">
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                  className="mb-3"
-                  type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  maxLength="17"
-                  required
-                />
-              </Form.Group>
-              <Form.Group controlId="amount">
-                <Form.Label>Amount</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="amount"
-                  value={formData.amount}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-              <Button className="w-100 mt-3" variant="primary" type="submit">
-                Add Transaction
-              </Button>
-            </Form>
+    <div className="min-h-screen text-gray-900 dark:text-white p-4 sm:p-6 lg:p-8">
+      <div className="max-w-6xl mx-auto">
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-sky-400 dark:from-indigo-400 dark:to-sky-300">
+        Finance Dashboard - {currentMonth}
+      </h1>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {[
+            { title: "Total Income", icon: TrendingUp, value: summary.income, color: "text-green-600 dark:text-green-400" },
+            { title: "Total Expenses", icon: TrendingDown, value: summary.expense, color: "text-red-600 dark:text-red-400" },
+            { title: "Current Balance", icon: DollarSign, value: summary.balance, color: "text-blue-600 dark:text-blue-400" },
+          ].map(({ title, icon: Icon, value, color }) => (
+            <motion.div
+              key={title}
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg"
+              whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+            >
+              <h3 className="text-lg font-medium text-gray-600 dark:text-gray-400 mb-2">{title}</h3>
+              <div className="flex items-center justify-between">
+                <Icon className={`w-10 h-10 ${color}`} />
+                <p className={`text-2xl sm:text-3xl font-bold ${color}`}>{value.toFixed(2)} €</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
-            <Container>
-              {!showTransactions && (
-                <Row>
-                  <Col md={6} sm={12}>
-                    <>
-                      <hr style={{ margin: "20px 0" }} />
-                      <ChartTracker
-                        key="income"
-                        type="income"
-                        chartKey={chartKey}
-                      />
-                    </>
-                  </Col>
-                  <Col md={6} sm={12}>
-                    <>
-                      <hr style={{ margin: "20px 0" }} />
-                      <ChartTracker
-                        key="expense"
-                        type="expense"
-                        chartKey={chartKey}
-                      />
-                    </>
-                  </Col>
-                </Row>
-              )}
-            </Container>
+        <Card className="bg-white dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden border-none">
+          <CardContent className="p-6">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+                <TabsTrigger value="add" className="text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-600">
+                  <PlusCircle className="w-4 h-4 mr-2" /> Add Transaction
+                </TabsTrigger>
+                <TabsTrigger value="view" className="text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-600">
+                  <List className="w-4 h-4 mr-2" /> View Transactions
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="add">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label htmlFor="type" className="text-sm font-medium text-gray-700 dark:text-gray-300">Type</label>
+                      <Select name="type" value={formData.type} onValueChange={(value) => handleChange("type", value)}>
+                        <SelectTrigger 
+                          id="type" 
+                          className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200 ease-in-out"
+                        >
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg">
+                          <SelectItem value="income" className="text-green-600 dark:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer transition-colors duration-150 ease-in-out">Income</SelectItem>
+                          <SelectItem value="expense" className="text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer transition-colors duration-150 ease-in-out">Expense</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="category" className="text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+                      <Select name="category" value={formData.category} onValueChange={(value) => handleChange("category", value)} disabled={!formData.type}>
+                        <SelectTrigger 
+                          id="category" 
+                          className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200 ease-in-out"
+                        >
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-gray-700 dark:text-white border border-gray-200 dark:border-gray-600 rounded-md shadow-lg overflow-y-auto">
+                          {getCategoryOptions().map(({ value, label }) => (
+                            <SelectItem 
+                              key={value} 
+                              value={value}
+                              className="hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer transition-colors duration-150 ease-in-out"
+                            >
+                              {label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <Input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={(e) => handleChange("title", e.target.value)}
+                    placeholder="Transaction Title"
+                    className="bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                    maxLength="17"
+                    required
+                  />
+                  <Input
+                    type="number"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={(e) => handleChange("amount", e.target.value)}
+                    placeholder="Amount"
+                    className="bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                    required
+                  />
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition duration-300 ease-in-out" type="submit">
+                    Add Transaction
+                  </Button>
+                </form>
 
-            {transactions.length > 0 && !showTransactions && (
-              <Button
-                className="w-100 mt-3"
-                variant="primary"
-                onClick={handleList}
-              >
-                Show Transactions
-              </Button>
-            )}
-          </Card.Body>
+                <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <ChartTracker key="income" type="income" chartKey={chartKey} />
+                  <ChartTracker key="expense" type="expense" chartKey={chartKey} />
+                </div>
+              </TabsContent>
+              <TabsContent value="view">
+                <AnimatePresence>
+                  {transactions.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <TransactionList
+                        transactions={transactions}
+                        onDelete={(id) => {
+                          setTransactions(transactions.filter((transaction) => transaction._id !== id));
+                          fetchTransactions();
+                        }}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
         </Card>
-      )}
-
-      {transactions.length > 0 && showTransactions && (
-        <Row>
-          <Col>
-            <TransactionList
-              transactions={transactions}
-              onDelete={(id) => {
-                setTransactions(
-                  transactions.filter((transaction) => transaction._id !== id)
-                );
-              }}
-              setShowTransactions={setShowTransactions}
-              handleList={handleList}
-            />
-          </Col>
-        </Row>
-      )}
-    </Container>
+      </div>
+    </div>
   );
 };
 
