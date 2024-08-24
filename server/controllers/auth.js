@@ -86,7 +86,7 @@ const login = async (req, res) => {
       },
       secret,
       {
-        expiresIn: "1h",
+        expiresIn: "30d",
       }
     );
 
