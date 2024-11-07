@@ -10,7 +10,6 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
 import './index.css'
 
-
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
